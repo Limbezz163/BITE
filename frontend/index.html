@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yammy - Главная</title>
+    <link rel="stylesheet" href="css/gen/reset.css">
+    <link rel="stylesheet" href="css/gen/variables.css">
+    <link rel="stylesheet" href="css/gen/base.css">
+    <link rel="stylesheet" href="css/gen/header.css">
+    <link rel="stylesheet" href="css/gen/footer.css">
+    <link rel="stylesheet" href="css/gen/components.css">
+    <link rel="stylesheet" href="css/gen/utilities.css">
+    <link rel="stylesheet" href="css/pages/index.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html" class="logo">
+                <div class="logo-placeholder">🍽️ YAMMY</div>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="catalog.html">Рестораны</a></li>
+                <li><a href="about.html">О нас</a></li>
+            </ul>
+            <div class="header-icons">
+                <a href="favourites.html" class="favourites-link" title="Избранное">
+                    <div class="favourites-placeholder">❤️</div>
+                </a>
+                <a href="auth.html" class="profile-link" id="profile-link">
+                    <div class="profile-placeholder" id="profile-icon">👤</div>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="hero">
+            <div class="hero-content">
+                <h1>Откройте мир вкуса с Yammy</h1>
+                <p>Лучшие рестораны города в одном месте</p>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="project-description">
+                <h2>Добро пожаловать в Yammy!</h2>
+                <p>Yammy — это ваша надежная платформа для поиска идеальных ресторанов. Мы собираем честные отзывы от реальных посетителей, чтобы помочь вам сделать правильный выбор. От уютных кофеен до элитных ресторанов — у нас есть всё для настоящих ценителей гастрономии.</p>
+                <p>Присоединяйтесь к нашему сообществу, делитесь своими впечатлениями и открывайте новые вкусы вместе с Yammy!</p>
+            </div>
+
+            <h2>Лучшие рестораны</h2>
+            <div class="restaurants-grid" id="top-restaurants">
+                <div class="card text-center">Загрузка...</div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-info">
+                <h3>Yammy</h3>
+                <p>Платформа для настоящих ценителей гастрономии. Мы помогаем найти идеальное место для любого события.</p>
+                <p>Артур Ш. 2025</p>
+            </div>
+            <div class="social-links">
+                <a href="#"><img src="images/telegram.png" alt="Telegram"></a>
+                <a href="#"><img src="images/dzen.png" alt="Яндекс Дзен"></a>
+                <a href="#"><img src="images/vk.png" alt="ВКонтакте"></a>
+                <a href="#"><img src="images/yand.png" alt="Яндекс"></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        async function loadTopRestaurants() {
+            try {
+                const restaurants = await apiRequest('/restaurants');
+                const sorted = [...restaurants].sort((a,b) => b.rating - a.rating);
+                const top5 = sorted.slice(0,5);
+                const container = document.getElementById('top-restaurants');
+                if (!top5.length) {
+                    container.innerHTML = '<div class="card">Нет ресторанов</div>';
+                    return;
+                }
+                container.innerHTML = top5.map(r => `
+                    <div class="restaurant-card card">
+                        <a href="restaurant.html?id=${r.id}">
+                            <img src="${r.imageUrl || 'https://via.placeholder.com/300x200'}" alt="${r.name}">
+                            <div class="card-content">
+                                <p>${r.name}</p>
+                                <div class="rating">★ ${r.rating}</div>
+                                <div class="price">${r.priceRange || '—'}</div>
+                            </div>
+                        </a>
+                    </div>
+                `).join('');
+            } catch(err) {
+                console.error(err);
+                document.getElementById('top-restaurants').innerHTML = '<div class="card">Ошибка загрузки</div>';
+            }
+        }
+        loadTopRestaurants();
+    </script>
+</body>
+</html>

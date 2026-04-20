@@ -1,0 +1,125 @@
+header {
+    background: var(--white);
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+header nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    min-height: 70px;
+}
+
+.logo {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.logo-placeholder {
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: var(--accent-color);
+    padding: 10px;
+    line-height: 1;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 2.5rem;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links li {
+    display: flex;
+    align-items: center;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 600;
+    font-size: 1.3rem;
+    transition: color 0.3s ease;
+    position: relative;
+    line-height: 1;
+    padding: 8px 0;
+}
+
+.nav-links a:hover,
+.nav-links a:focus {
+    color: var(--accent-color);
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--accent-color);
+    transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+.profile-link {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+.header-icons {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.favourites-link {
+    text-decoration: none;
+}
+
+.favourites-placeholder {
+    width: 45px;
+    height: 45px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-size: 1.5rem;
+    transition: transform 0.3s ease;
+}
+
+.favourites-placeholder:hover {
+    transform: scale(1.1);
+    background: var(--accent-color);
+}
+.profile-placeholder {
+    width: 55px;
+    height: 55px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-size: 1.6rem;
+    transition: transform 0.3s ease;
+}
+
+.profile-placeholder:hover {
+    transform: scale(1.1);
+}

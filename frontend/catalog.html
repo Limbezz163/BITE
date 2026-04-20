@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yammy - Каталог ресторанов</title>
+    <link rel="stylesheet" href="css/gen/reset.css">
+    <link rel="stylesheet" href="css/gen/variables.css">
+    <link rel="stylesheet" href="css/gen/base.css">
+    <link rel="stylesheet" href="css/gen/header.css">
+    <link rel="stylesheet" href="css/gen/footer.css">
+    <link rel="stylesheet" href="css/gen/components.css">
+    <link rel="stylesheet" href="css/gen/utilities.css">
+    <link rel="stylesheet" href="css/pages/catalog.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html" class="logo"><div class="logo-placeholder">🍽️ YAMMY</div></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="catalog.html">Рестораны</a></li>
+                <li><a href="about.html">О нас</a></li>
+            </ul>
+            <div class="header-icons">
+                <a href="favourites.html" class="favourites-link" title="Избранное">
+                    <div class="favourites-placeholder">❤️</div>
+                </a>
+                <a href="auth.html" class="profile-link" id="profile-link">
+                    <div class="profile-placeholder" id="profile-icon">👤</div>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="catalog-header">
+            <h1>Каталог ресторанов</h1>
+            <p>Найдите идеальное место для вашего следующего визита</p>
+        </div>
+
+        <div class="search-box">
+            <input type="text" id="search-input" placeholder="🔍 Поиск ресторана по названию...">
+        </div>
+        
+        <div class="catalog-container">
+            <aside class="filters">
+                <div class="filter-group">
+                    <p>Ценовой диапазон</p>
+                    <select id="price-filter">
+                        <option value="">Все</option>
+                        <option value="$">$ (до 1000₽)</option>
+                        <option value="$$">$$ (1000-2000₽)</option>
+                        <option value="$$$">$$$ (2000-4000₽)</option>
+                        <option value="$$$$">$$$$ (4000-7000₽)</option>
+                        <option value="$$$$$">$$$$$ (от 7000₽)</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <p>Кухня</p>
+                    <select id="cuisine-filter">
+                        <option value="">Все</option>
+                        <option value="Итальянская">Итальянская</option>
+                        <option value="Японская">Японская</option>
+                        <option value="Русская">Русская</option>
+                        <option value="Грузинская">Грузинская</option>
+                        <option value="Американская">Американская</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <p>Тип заведения</p>
+                    <select id="type-filter">
+                        <option value="">Все</option>
+                        <option value="Ресторан">Ресторан</option>
+                        <option value="Кафе">Кафе</option>
+                        <option value="Бар">Бар</option>
+                        <option value="Кофейня">Кофейня</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <p>Рейтинг</p>
+                    <select id="rating-filter">
+                        <option value="">Любой</option>
+                        <option value="4.5">★ 4.5+</option>
+                        <option value="4.0">★ 4.0+</option>
+                        <option value="3.5">★ 3.5+</option>
+                    </select>
+                </div>
+            </aside>
+            <div id="restaurants-list" class="restaurants-list"><div class="card text-center">Загрузка...</div></div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-info">
+                <h3>Yammy</h3>
+                <p>Платформа для настоящих ценителей гастрономии. Мы помогаем найти идеальное место для любого события.</p>
+                <p>Артур Ш. 2025</p>
+            </div>
+            <div class="social-links">
+                <a href="#"><img src="images/telegram.png" alt="Telegram"></a>
+                <a href="#"><img src="images/dzen.png" alt="Яндекс Дзен"></a>
+                <a href="#"><img src="images/vk.png" alt="ВКонтакте"></a>
+                <a href="#"><img src="images/yand.png" alt="Яндекс"></a>
+            </div>
+        </div>
+    </footer>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/catalog.js"></script>
+</body>
+</html>

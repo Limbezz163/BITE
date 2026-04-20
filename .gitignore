@@ -1,0 +1,27 @@
+# IDE files
+.idea/
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# .NET build output
+**/bin/
+**/obj/
+
+# Frontend dependencies/build output
+**/node_modules/
+**/dist/
+**/.next/
+
+# Logs
+*.log
+
+# Environment/local settings
+.env
+.env.*
+
+# OS artifacts
+.DS_Store
+Thumbs.db

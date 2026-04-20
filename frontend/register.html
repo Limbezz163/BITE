@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация - Yammy</title>
+    <link rel="stylesheet" href="css/gen/reset.css">
+    <link rel="stylesheet" href="css/gen/variables.css">
+    <link rel="stylesheet" href="css/gen/base.css">
+    <link rel="stylesheet" href="css/gen/header.css">
+    <link rel="stylesheet" href="css/gen/footer.css">
+    <link rel="stylesheet" href="css/gen/components.css">
+    <link rel="stylesheet" href="css/gen/utilities.css">
+    <link rel="stylesheet" href="css/pages/auth.css">
+</head>
+<body>
+    <header>...</header>
+    <main class="container">
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h1>Регистрация</h1>
+                    <p>Создайте новый аккаунт</p>
+                </div>
+                <form class="auth-form" id="register-form">
+                    <div class="form-group">
+                        <label for="name">Имя</label>
+                        <input type="text" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Пароль</label>
+                        <input type="password" id="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm-password">Подтвердите пароль</label>
+                        <input type="password" id="confirm-password" required>
+                    </div>
+                    <div class="auth-actions">
+                        <button type="submit" class="btn" id="register-btn">Зарегистрироваться</button>
+                    </div>
+                    <div class="auth-links">
+                        <p>Уже есть аккаунт? <a href="auth.html">Войти</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+    <footer>...</footer>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        document.getElementById('register-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirm = document.getElementById('confirm-password').value;
+            if (password !== confirm) { alert('Пароли не совпадают'); return; }
+            try {
+                await register(name, email, password, '');
+                window.location.href = 'index.html';
+            } catch(err) { alert(err.message); }
+        });
+    </script>
+</body>
+</html>

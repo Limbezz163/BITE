@@ -1,0 +1,178 @@
+/* catalog.css - Стили для страницы каталога ресторанов */
+
+.catalog-header {
+    text-align: center;
+    padding: 30px 0;
+    margin-bottom: 20px;
+}
+
+.catalog-container {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 25px;
+    padding: 20px 0;
+}
+
+.filters {
+    background: var(--white);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    height: fit-content;
+    position: sticky;
+    top: 100px;
+}
+
+.filter-group {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.filter-group:last-child {
+    border-bottom: none;
+}
+
+.filter-group ul {
+    list-style: none;
+}
+
+.filter-group li {
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+}
+
+.filter-group input[type="text"] {
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+}
+
+.restaurants-list {
+    display: grid;
+    gap: 24px;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.restaurant-item {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 24px;
+    padding: 24px;
+    border-radius: 20px;
+    background: var(--white);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.restaurant-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+}
+
+.restaurant-item img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 16px;
+}
+
+.restaurant-info p:first-child {
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.restaurant-meta {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    font-size: 1rem;
+}
+
+.restaurant-info p:last-child {
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 0;
+    color: var(--text-light);
+}
+
+.search-box {
+    margin-bottom: 20px;
+    padding-top: 10px;
+}
+
+.hidden-filters {
+    display: none;
+}
+
+.show-more {
+    text-align: center;
+    margin: 25px 0;
+}
+
+.hidden-restaurants {
+    display: none;
+    gap: 24px;
+}
+
+/* Адаптивность для каталога */
+@media (max-width: 968px) {
+    .catalog-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .filters {
+        position: static;
+    }
+    
+    .restaurant-item {
+        grid-template-columns: 1fr;
+    }
+    
+    .restaurant-item img {
+        height: 200px;
+    }
+}
+
+@media (max-width: 768px) {
+    .catalog-header {
+        padding: 20px 0;
+    }
+    
+    .filters {
+        padding: 15px;
+    }
+    
+    .restaurant-item {
+        padding: 16px;
+    }
+    
+    .restaurant-info p:first-child {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .restaurant-item {
+        padding: 12px;
+    }
+    
+    .restaurant-meta {
+        gap: 10px;
+    }
+    
+    .section-title {
+        font-size: 1.3rem;
+    }
+    
+    .filter-group {
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+    }
+}

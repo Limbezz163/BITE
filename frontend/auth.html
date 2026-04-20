@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход - Yammy</title>
+    <link rel="stylesheet" href="css/gen/reset.css">
+    <link rel="stylesheet" href="css/gen/variables.css">
+    <link rel="stylesheet" href="css/gen/base.css">
+    <link rel="stylesheet" href="css/gen/header.css">
+    <link rel="stylesheet" href="css/gen/footer.css">
+    <link rel="stylesheet" href="css/gen/components.css">
+    <link rel="stylesheet" href="css/gen/utilities.css">
+    <link rel="stylesheet" href="css/pages/auth.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html" class="logo"><div class="logo-placeholder">🍽️ YAMMY</div></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="catalog.html">Рестораны</a></li>
+                <li><a href="about.html">О нас</a></li>
+            </ul>
+            <a href="auth.html" class="profile-link" id="profile-link"><div class="profile-placeholder" id="profile-icon">👤</div></a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h1>Вход в аккаунт</h1>
+                    <p>Введите свои данные для входа</p>
+                </div>
+                <form class="auth-form" id="login-form">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Пароль</label>
+                        <input type="password" id="password" required>
+                    </div>
+                    <div class="form-options">
+                        <label class="remember-me">
+                            <input type="checkbox" id="remember"> Запомнить меня
+                        </label>
+                    </div>
+                    <div class="auth-actions">
+                        <button type="submit" class="btn">Войти</button>
+                    </div>
+                    <div class="auth-links">
+                        <p>Нет аккаунта? <a href="register.html">Зарегистрироваться</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-info">
+                <h3>Yammy</h3>
+                <p>Платформа для настоящих ценителей гастрономии. Мы помогаем найти идеальное место для любого события.</p>
+                <p>Артур Ш. 2025</p>
+            </div>
+            <div class="social-links">
+                <a href="#"><img src="images/telegram.png" alt="Telegram"></a>
+                <a href="#"><img src="images/dzen.png" alt="Яндекс Дзен"></a>
+                <a href="#"><img src="images/vk.png" alt="ВКонтакте"></a>
+                <a href="#"><img src="images/yand.png" alt="Яндекс"></a>
+            </div>
+        </div>
+    </footer>
+    <script>
+    localStorage.clear();
+    sessionStorage.clear();
+</script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const remember = document.getElementById('remember').checked;
+            try {
+                await login(email, password, remember);
+               
+            } catch(err) { alert(err.message); }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель - Yammy</title>
+    <link rel="stylesheet" href="css/gen/reset.css">
+    <link rel="stylesheet" href="css/gen/variables.css">
+    <link rel="stylesheet" href="css/gen/base.css">
+    <link rel="stylesheet" href="css/gen/header.css">
+    <link rel="stylesheet" href="css/gen/footer.css">
+    <link rel="stylesheet" href="css/gen/components.css">
+    <link rel="stylesheet" href="css/gen/utilities.css">
+    <link rel="stylesheet" href="css/pages/admin.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html" class="logo">
+                <div class="logo-placeholder">🍽️ YAMMY</div>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="catalog.html">Рестораны</a></li>
+                <li><a href="about.html">О нас</a></li>
+            </ul>
+            <a href="profile.html" class="profile-link">
+                <div class="profile-placeholder">👤</div>
+            </a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="admin-header">
+            <h1>Панель администратора</h1>
+        </section>
+
+        <section class="stats">
+            <div class="stat-card">
+                <div class="stat-number">10</div>
+                <div>Всего ресторанов</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">4.6</div>
+                <div>Средний рейтинг</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">89%</div>
+                <div>Активных пользователей</div>
+            </div>
+        </section>
+
+        <section class="admin-actions">
+            <div class="section-header">
+                <h2>Управление ресторанами</h2>
+                <a href="add.html" class="btn">+ Добавить ресторан</a>
+            </div>
+            <div class="restaurants-list">
+                <article class="restaurant-admin-item">
+                    <img src="images/La1.png" alt="La Piazza" class="restaurant-image">
+                    <div class="restaurant-info">
+                        <h3>La Piazza</h3>
+                        <p>Итальянская кухня • ★ 4.8 • $$$</p>
+                        <p>Уютный итальянский ресторан в центре города</p>
+                    </div>
+                    <div class="admin-actions-buttons">
+                        <a href="add.html" class="btn btn-secondary">Редактировать</a>
+                        <button class="btn btn-danger">Удалить</button>
+                    </div>
+                </article>
+                
+                <article class="restaurant-admin-item">
+                    <img src="images/Sakura.png" alt="Sakura" class="restaurant-image">
+                    <div class="restaurant-info">
+                        <h3>Sakura</h3>
+                        <p>Японская кухня • ★ 4.6 • $$$$</p>
+                        <p>Элитный ресторан японской кухни с шеф-поваром из Токио</p>
+                    </div>
+                    <div class="admin-actions-buttons">
+                        <a href="add.html" class="btn btn-secondary">Редактировать</a>
+                        <button class="btn btn-danger">Удалить</button>
+                    </div>
+                </article>
+                
+                <article class="restaurant-admin-item">
+                    <img src="images/Gruzija.png" alt="Грузия" class="restaurant-image">
+                    <div class="restaurant-info">
+                        <h3>Грузия</h3>
+                        <p>Грузинская кухня • ★ 4.9 • $$</p>
+                        <p>Аутентичный грузинский ресторан с живой музыкой</p>
+                    </div>
+                    <div class="admin-actions-buttons">
+                        <a href="add.html" class="btn btn-secondary">Редактировать</a>
+                        <button class="btn btn-danger">Удалить</button>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-info">
+                <h3>Yammy</h3>
+                <p>Платформа для настоящих ценителей гастрономии. Мы помогаем найти идеальное место для любого события.</p>
+                <p>Артур Ш. 2025</p>
+            </div>
+            <div class="social-links">
+                <a href="#"><img src="images/telegram.png" alt="Telegram"></a>
+                <a href="#"><img src="images/dzen.png" alt="Яндекс Дзен"></a>
+                <a href="#"><img src="images/vk.png" alt="ВКонтакте"></a>
+                <a href="#"><img src="images/yand.png" alt="Яндекс"></a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

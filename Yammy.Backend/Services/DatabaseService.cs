@@ -8,6 +8,14 @@ namespace Yammy.Backend.Services;
 public class DatabaseService
 {
     private readonly string _connectionString;
+    private static readonly string[] RailwayUrlVariableNames =
+    {
+        "MYSQL_URL",
+        "MYSQL_PUBLIC_URL",
+        "MYSQL_PRIVATE_URL",
+        "DATABASE_URL",
+        "DATABASE_PUBLIC_URL"
+    };
 
     public DatabaseService(IConfiguration configuration)
     {
@@ -24,17 +32,22 @@ public class DatabaseService
 
     private static string? BuildConnectionStringFromRailwayVariables()
     {
-        var host = Environment.GetEnvironmentVariable("MYSQLHOST");
-        var port = Environment.GetEnvironmentVariable("MYSQLPORT");
-        var database = Environment.GetEnvironmentVariable("MYSQLDATABASE");
-        var user = Environment.GetEnvironmentVariable("MYSQLUSER");
-        var password = Environment.GetEnvironmentVariable("MYSQLPASSWORD");
+        var host = CleanValue(Environment.GetEnvironmentVariable("MYSQLHOST"));
+        var port = CleanValue(Environment.GetEnvironmentVariable("MYSQLPORT"));
+        var database = CleanValue(Environment.GetEnvironmentVariable("MYSQLDATABASE"));
+        var user = CleanValue(Environment.GetEnvironmentVariable("MYSQLUSER"));
+        var password = CleanValue(Environment.GetEnvironmentVariable("MYSQLPASSWORD"));
 
         if (!string.IsNullOrWhiteSpace(host)
             && !string.IsNullOrWhiteSpace(database)
             && !string.IsNullOrWhiteSpace(user)
             && !string.IsNullOrWhiteSpace(password))
         {
+            // Some dashboards store the full MySQL URL by mistake in MYSQLHOST.
+            var fromHostUrl = TryBuildConnectionStringFromUrl(host);
+            if (!string.IsNullOrWhiteSpace(fromHostUrl))
+                return fromHostUrl;
+
             return BuildConnectionString(
                 host,
                 string.IsNullOrWhiteSpace(port) ? "3306" : port,
@@ -43,23 +56,40 @@ public class DatabaseService
                 password);
         }
 
-        var mysqlUrl = Environment.GetEnvironmentVariable("MYSQL_URL");
-        if (!string.IsNullOrWhiteSpace(mysqlUrl)
-            && Uri.TryCreate(mysqlUrl, UriKind.Absolute, out var uri))
+        foreach (var variableName in RailwayUrlVariableNames)
         {
-            var userInfoParts = (uri.UserInfo ?? string.Empty).Split(':', 2);
-            if (userInfoParts.Length == 2)
-            {
-                return BuildConnectionString(
-                    uri.Host,
-                    uri.Port > 0 ? uri.Port.ToString() : "3306",
-                    uri.AbsolutePath.Trim('/'),
-                    Uri.UnescapeDataString(userInfoParts[0]),
-                    Uri.UnescapeDataString(userInfoParts[1]));
-            }
+            var fromUrl = TryBuildConnectionStringFromUrl(CleanValue(Environment.GetEnvironmentVariable(variableName)));
+            if (!string.IsNullOrWhiteSpace(fromUrl))
+                return fromUrl;
         }
 
         return null;
+    }
+
+    private static string? TryBuildConnectionStringFromUrl(string? mysqlUrl)
+    {
+        if (string.IsNullOrWhiteSpace(mysqlUrl)
+            || !Uri.TryCreate(mysqlUrl, UriKind.Absolute, out var uri))
+            return null;
+
+        var userInfoParts = (uri.UserInfo ?? string.Empty).Split(':', 2);
+        if (userInfoParts.Length != 2)
+            return null;
+
+        return BuildConnectionString(
+            uri.Host,
+            uri.Port > 0 ? uri.Port.ToString() : "3306",
+            uri.AbsolutePath.Trim('/'),
+            Uri.UnescapeDataString(userInfoParts[0]),
+            Uri.UnescapeDataString(userInfoParts[1]));
+    }
+
+    private static string? CleanValue(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            return value;
+
+        return value.Trim().Trim('"', '\'');
     }
 
     private static string BuildConnectionString(

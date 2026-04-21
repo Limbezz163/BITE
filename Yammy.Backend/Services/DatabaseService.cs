@@ -11,12 +11,15 @@ public class DatabaseService
 
     public DatabaseService(IConfiguration configuration)
     {
+        // On Railway we prefer injected MYSQL* variables over local appsettings.
+        var railwayConnection = BuildConnectionStringFromRailwayVariables();
         var configuredConnection = configuration.GetConnectionString("DefaultConnection");
         _connectionString =
-            !string.IsNullOrWhiteSpace(configuredConnection)
-                ? configuredConnection
-                : BuildConnectionStringFromRailwayVariables()
-                  ?? "Server=localhost;Port=3306;Database=yammy_db;User Id=yammy_user;Password=yammy_password;Charset=utf8mb4;";
+            !string.IsNullOrWhiteSpace(railwayConnection)
+                ? railwayConnection
+                : !string.IsNullOrWhiteSpace(configuredConnection)
+                    ? configuredConnection
+                    : "Server=localhost;Port=3306;Database=yammy_db;User Id=yammy_user;Password=yammy_password;Charset=utf8mb4;";
     }
 
     private static string? BuildConnectionStringFromRailwayVariables()

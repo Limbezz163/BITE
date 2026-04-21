@@ -32,6 +32,14 @@ public class DatabaseService
 
     private static string? BuildConnectionStringFromRailwayVariables()
     {
+        // Prefer URL-style variables first: they are less error-prone in dashboards.
+        foreach (var variableName in RailwayUrlVariableNames)
+        {
+            var fromUrl = TryBuildConnectionStringFromUrl(CleanValue(Environment.GetEnvironmentVariable(variableName)));
+            if (!string.IsNullOrWhiteSpace(fromUrl))
+                return fromUrl;
+        }
+
         var host = CleanValue(Environment.GetEnvironmentVariable("MYSQLHOST"));
         var port = CleanValue(Environment.GetEnvironmentVariable("MYSQLPORT"));
         var database = CleanValue(Environment.GetEnvironmentVariable("MYSQLDATABASE"));
@@ -54,13 +62,6 @@ public class DatabaseService
                 database,
                 user,
                 password);
-        }
-
-        foreach (var variableName in RailwayUrlVariableNames)
-        {
-            var fromUrl = TryBuildConnectionStringFromUrl(CleanValue(Environment.GetEnvironmentVariable(variableName)));
-            if (!string.IsNullOrWhiteSpace(fromUrl))
-                return fromUrl;
         }
 
         return null;
@@ -89,7 +90,12 @@ public class DatabaseService
         if (string.IsNullOrWhiteSpace(value))
             return value;
 
-        return value.Trim().Trim('"', '\'');
+        var cleaned = value.Trim().Trim('"', '\'');
+        // Railway variable template wasn't resolved (for example copied as plain text).
+        if (cleaned.Contains("${{"))
+            return null;
+
+        return cleaned;
     }
 
     private static string BuildConnectionString(

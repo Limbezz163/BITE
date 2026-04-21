@@ -11,8 +11,62 @@ public class DatabaseService
 
     public DatabaseService(IConfiguration configuration)
     {
-        _connectionString = configuration.GetConnectionString("DefaultConnection") 
-            ?? "Server=localhost;Port=3306;Database=yammy_db;User Id=yammy_user;Password=yammy_password;Charset=utf8mb4;";
+        var configuredConnection = configuration.GetConnectionString("DefaultConnection");
+        _connectionString =
+            !string.IsNullOrWhiteSpace(configuredConnection)
+                ? configuredConnection
+                : BuildConnectionStringFromRailwayVariables()
+                  ?? "Server=localhost;Port=3306;Database=yammy_db;User Id=yammy_user;Password=yammy_password;Charset=utf8mb4;";
+    }
+
+    private static string? BuildConnectionStringFromRailwayVariables()
+    {
+        var host = Environment.GetEnvironmentVariable("MYSQLHOST");
+        var port = Environment.GetEnvironmentVariable("MYSQLPORT");
+        var database = Environment.GetEnvironmentVariable("MYSQLDATABASE");
+        var user = Environment.GetEnvironmentVariable("MYSQLUSER");
+        var password = Environment.GetEnvironmentVariable("MYSQLPASSWORD");
+
+        if (!string.IsNullOrWhiteSpace(host)
+            && !string.IsNullOrWhiteSpace(database)
+            && !string.IsNullOrWhiteSpace(user)
+            && !string.IsNullOrWhiteSpace(password))
+        {
+            return BuildConnectionString(
+                host,
+                string.IsNullOrWhiteSpace(port) ? "3306" : port,
+                database,
+                user,
+                password);
+        }
+
+        var mysqlUrl = Environment.GetEnvironmentVariable("MYSQL_URL");
+        if (!string.IsNullOrWhiteSpace(mysqlUrl)
+            && Uri.TryCreate(mysqlUrl, UriKind.Absolute, out var uri))
+        {
+            var userInfoParts = (uri.UserInfo ?? string.Empty).Split(':', 2);
+            if (userInfoParts.Length == 2)
+            {
+                return BuildConnectionString(
+                    uri.Host,
+                    uri.Port > 0 ? uri.Port.ToString() : "3306",
+                    uri.AbsolutePath.Trim('/'),
+                    Uri.UnescapeDataString(userInfoParts[0]),
+                    Uri.UnescapeDataString(userInfoParts[1]));
+            }
+        }
+
+        return null;
+    }
+
+    private static string BuildConnectionString(
+        string host,
+        string port,
+        string database,
+        string user,
+        string password)
+    {
+        return $"Server={host};Port={port};Database={database};User Id={user};Password={password};Charset=utf8mb4;SslMode=Preferred;";
     }
 
     private async Task EnsureUtf8Async(MySqlConnection connection)

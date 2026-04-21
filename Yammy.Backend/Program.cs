@@ -7,6 +7,13 @@ using Yammy.Backend.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var port = Environment.GetEnvironmentVariable("PORT");
+if (!string.IsNullOrWhiteSpace(port))
+{
+    // Railway expects the app to listen on 0.0.0.0:$PORT.
+    builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+}
+
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
@@ -58,12 +65,14 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+app.UseDefaultFiles();
+app.UseStaticFiles();
 app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
-app.MapGet("/", () => "Yammy API is running!");
+app.MapGet("/api/health", () => Results.Ok(new { status = "ok" }));
 
 app.MapGet("/api/test-db", async (DatabaseService dbService) =>
 {
@@ -81,6 +90,6 @@ app.MapGet("/api/test-db", async (DatabaseService dbService) =>
     }
 });
 
-
+app.MapFallbackToFile("index.html");
 
 app.Run();

@@ -38,18 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
         };
         
         try {
-            const response = await fetch('http://localhost:5000/api/restaurants', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${getToken()}`
-                },
-                body: JSON.stringify(formData)
-            });
-            const text = await response.text();
-            console.log('Status:', response.status);
-            console.log('Body:', text);
-            if (!response.ok) throw new Error(`HTTP ${response.status}: ${text}`);
+            await apiRequest('/restaurants', 'POST', formData, true);
             alert('Ресторан успешно добавлен');
             window.location.href = 'admin.html';
         } catch(err) {

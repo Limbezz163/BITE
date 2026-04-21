@@ -1,4 +1,6 @@
-const API_BASE = 'http://localhost:5000/api';
+const API_BASE = window.location.hostname === 'localhost'
+    ? 'http://localhost:5000/api'
+    : '/api';
 
 async function apiRequest(endpoint, method = 'GET', body = null, requireAuth = false) {
     const headers = { 'Content-Type': 'application/json' };

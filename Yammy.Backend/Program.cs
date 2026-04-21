@@ -81,12 +81,18 @@ app.MapGet("/api/test-db", async (DatabaseService dbService) =>
         var restaurants = await dbService.GetAllRestaurantsAsync();
         return Results.Ok(new { 
             status = "success", 
-            message = $"Database connection successful. Found {restaurants.Count} restaurants."
+            message = $"Database connection successful. Found {restaurants.Count} restaurants.",
+            diagnostics = dbService.GetConnectionDiagnostics()
         });
     }
     catch (Exception ex)
     {
-        return Results.Ok(new { status = "error", message = ex.Message });
+        return Results.Ok(new
+        {
+            status = "error",
+            message = ex.Message,
+            diagnostics = dbService.GetConnectionDiagnostics()
+        });
     }
 });
 

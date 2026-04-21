@@ -8,6 +8,7 @@ namespace Yammy.Backend.Services;
 public class DatabaseService
 {
     private readonly string _connectionString;
+    private readonly string _connectionSource;
     private static readonly string[] RailwayUrlVariableNames =
     {
         "MYSQL_URL",
@@ -28,6 +29,13 @@ public class DatabaseService
                 : !string.IsNullOrWhiteSpace(configuredConnection)
                     ? configuredConnection
                     : "Server=localhost;Port=3306;Database=yammy_db;User Id=yammy_user;Password=yammy_password;Charset=utf8mb4;";
+
+        _connectionSource =
+            !string.IsNullOrWhiteSpace(railwayConnection)
+                ? "railway_env"
+                : !string.IsNullOrWhiteSpace(configuredConnection)
+                    ? "appsettings"
+                    : "fallback_local";
     }
 
     private static string? BuildConnectionStringFromRailwayVariables()
@@ -96,6 +104,32 @@ public class DatabaseService
             return null;
 
         return cleaned;
+    }
+
+    public object GetConnectionDiagnostics()
+    {
+        var builder = new MySqlConnectionStringBuilder(_connectionString);
+        return new
+        {
+            source = _connectionSource,
+            server = builder.Server,
+            port = builder.Port,
+            database = builder.Database,
+            user = builder.UserID,
+            env = new
+            {
+                hasMysqlHost = !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("MYSQLHOST")),
+                hasMysqlPort = !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("MYSQLPORT")),
+                hasMysqlDatabase = !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("MYSQLDATABASE")),
+                hasMysqlUser = !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("MYSQLUSER")),
+                hasMysqlPassword = !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("MYSQLPASSWORD")),
+                hasMysqlUrl = !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("MYSQL_URL")),
+                hasMysqlPublicUrl = !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("MYSQL_PUBLIC_URL")),
+                hasDatabaseUrl = !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("DATABASE_URL")),
+                mysqlHostLooksTemplate = (Environment.GetEnvironmentVariable("MYSQLHOST") ?? string.Empty).Contains("${{"),
+                mysqlUrlLooksTemplate = (Environment.GetEnvironmentVariable("MYSQL_URL") ?? string.Empty).Contains("${{"),
+            }
+        };
     }
 
     private static string BuildConnectionString(

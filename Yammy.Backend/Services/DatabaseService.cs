@@ -109,6 +109,18 @@ public class DatabaseService
     public object GetConnectionDiagnostics()
     {
         var builder = new MySqlConnectionStringBuilder(_connectionString);
+        var visibleKeys = Environment.GetEnvironmentVariables()
+            .Keys
+            .Cast<object>()
+            .Select(k => k?.ToString() ?? string.Empty)
+            .Where(k =>
+                k.StartsWith("MYSQL", StringComparison.OrdinalIgnoreCase)
+                || k.StartsWith("DATABASE", StringComparison.OrdinalIgnoreCase)
+                || k.StartsWith("RAILWAY", StringComparison.OrdinalIgnoreCase)
+                || k.StartsWith("PORT", StringComparison.OrdinalIgnoreCase))
+            .OrderBy(k => k)
+            .ToArray();
+
         return new
         {
             source = _connectionSource,
@@ -116,6 +128,14 @@ public class DatabaseService
             port = builder.Port,
             database = builder.Database,
             user = builder.UserID,
+            runtime = new
+            {
+                railwayEnvironment = Environment.GetEnvironmentVariable("RAILWAY_ENVIRONMENT_NAME"),
+                railwayService = Environment.GetEnvironmentVariable("RAILWAY_SERVICE_NAME"),
+                railwayProject = Environment.GetEnvironmentVariable("RAILWAY_PROJECT_NAME"),
+                railwayCommit = Environment.GetEnvironmentVariable("RAILWAY_GIT_COMMIT_SHA"),
+                hasPort = !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("PORT"))
+            },
             env = new
             {
                 hasMysqlHost = !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("MYSQLHOST")),
@@ -128,7 +148,8 @@ public class DatabaseService
                 hasDatabaseUrl = !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("DATABASE_URL")),
                 mysqlHostLooksTemplate = (Environment.GetEnvironmentVariable("MYSQLHOST") ?? string.Empty).Contains("${{"),
                 mysqlUrlLooksTemplate = (Environment.GetEnvironmentVariable("MYSQL_URL") ?? string.Empty).Contains("${{"),
-            }
+            },
+            visibleEnvKeys = visibleKeys
         };
     }
 
